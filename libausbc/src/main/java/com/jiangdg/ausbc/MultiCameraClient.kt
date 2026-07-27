@@ -594,6 +594,22 @@ class MultiCameraClient(ctx: Context, callback: IDeviceConnectCallBack?) {
         }
 
         /**
+         * Resize the live render output (e.g. after a screen rotation) without
+         * closing and reopening the camera. setRenderSize() above only feeds the
+         * one-time size measurement taken while the camera is first opening;
+         * calling it again later has no effect since that future has already been
+         * consumed. This calls straight through to the already-running
+         * RenderManager, which only touches the GL viewport/output surface and
+         * never the USB connection.
+         *
+         * @param width new surface width
+         * @param height new surface height
+         */
+        fun updateDisplaySize(width: Int, height: Int) {
+            mRenderManager?.setRenderSize(width, height)
+        }
+
+        /**
          * Add render effect.There is only one setting in the same category
          * <p>
          * The default effects:
